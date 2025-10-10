@@ -1,7 +1,7 @@
 DELETE FROM `weenie` WHERE `class_Id` = 694200300;
 
 INSERT INTO `weenie` (`class_Id`, `class_Name`, `type`, `last_Modified`)
-VALUES (694200300, 'Mid Event Controller', 10, '2022-03-31 06:02:40') /* Creature */;
+VALUES (694200300, 'Mid Event Controller', 10, '2025-10-10 02:00:26') /* Creature */;
 
 INSERT INTO `weenie_properties_int` (`object_Id`, `type`, `value`)
 VALUES (694200300,   1,         16) /* ItemType - Creature */
@@ -114,16 +114,16 @@ INSERT INTO `weenie_properties_emote_action` (`emote_Id`, `order`, `type`, `dela
 VALUES (@parent_id,  0,  77 /* DeleteSelf */, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 INSERT INTO `weenie_properties_generator` (`object_Id`, `probability`, `weenie_Class_Id`, `delay`, `init_Create`, `max_Create`, `when_Create`, `where_Create`, `stack_Size`, `palette_Id`, `shade`, `obj_Cell_Id`, `origin_X`, `origin_Y`, `origin_Z`, `angles_W`, `angles_X`, `angles_Y`, `angles_Z`)
-VALUES (694200300, -1, 694200294, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Event Bell (694200294) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200303, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate straw Drudge event gen (694200303) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200303, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate straw Drudge event gen (694200303) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200303, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate straw Drudge event gen (694200303) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200303, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate straw Drudge event gen (694200303) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200303, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate straw Drudge event gen (694200303) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200301, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Oblit event gen (694200301) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200301, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Oblit event gen (694200301) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200301, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Oblit event gen (694200301) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200301, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Oblit event gen (694200301) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200301, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Oblit event gen (694200301) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-	 , (694200300, -1, 694200302, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate big papa straw drudge gen (694200302) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */
-     , (694200300, -1, 694200295, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Event Exit Controller (694200295) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Specific */;
+VALUES (694200300, -1, 694200294, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Event Bell */
+         , (694200300, -1, 694200321, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200322, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200323, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200324, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200325, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200326, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200327, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200328, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200329, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200330, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+         , (694200300, -1, 694200331, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
+     , (694200300, -1, 694200295, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Event Exit Controller */;

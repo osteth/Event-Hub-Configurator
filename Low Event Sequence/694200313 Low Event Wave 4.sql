@@ -1,7 +1,7 @@
 DELETE FROM `weenie` WHERE `class_Id` = 694200313;
 
 INSERT INTO `weenie` (`class_Id`, `class_Name`, `type`, `last_Modified`)
-VALUES (694200313, 'Low Event Wave 4', 1, '2022-03-31 06:02:40') /* Generic */;
+VALUES (694200313, 'Low Event Wave 4', 1, '2025-10-10 02:00:26') /* Generic */;
 
 INSERT INTO `weenie_properties_int` (`object_Id`, `type`, `value`)
 VALUES (694200313,  81,         10) /* MaxGeneratedObjects */
@@ -27,14 +27,13 @@ VALUES (694200313,   1, 0x0200026B) /* Setup */
      , (694200313,   8, 0x06001066) /* Icon */;
 
 INSERT INTO `weenie_properties_generator` (`object_Id`, `probability`, `weenie_Class_Id`, `delay`, `init_Create`, `max_Create`, `when_Create`, `where_Create`, `stack_Size`, `palette_Id`, `shade`, `obj_Cell_Id`, `origin_X`, `origin_Y`, `origin_Z`, `angles_W`, `angles_X`, `angles_Y`, `angles_Z`)
-VALUES (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */
-	 , (694200313, -1,  300101071, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Death Dillo ( 300101071) (x1 up to max of 1) - Regenerate upon Destruction - Location to (re)Generate: Scatter */;
-
+VALUES (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Monster */
+         , (694200313, -1,  300101075, 1, 1, 1, 1, 2, -1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0);
