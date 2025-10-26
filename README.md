@@ -155,6 +155,23 @@ low,boss,10,300101093
 
 ## Commands
 
+### Generate Random Event (NEW!)
+```bash
+# Generate all tiers with same-mob waves
+python generate_random_event.py
+
+# Generate with mixed mobs per wave
+python generate_random_event.py --mixed-waves
+
+# Generate specific tiers
+python generate_random_event.py --tiers low mid -o my_event.csv
+
+# Boss wave with multiple bosses
+python generate_random_event.py --boss-count 3
+```
+
+📖 **[Full documentation: RANDOM_GENERATOR_README.md](RANDOM_GENERATOR_README.md)**
+
 ### Generate Event Files
 ```bash
 python generate_event_files.py <config.csv>
