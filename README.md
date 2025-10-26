@@ -15,12 +15,18 @@ Instead of manually creating and editing 33+ SQL files, you simply edit a CSV fi
 
 ### 1. Create a Configuration File
 
-**Option A: Use the example**
+**Option A: 🎲 Generate a random event (NEW!)**
+```bash
+python generate_random_event.py -o my_event.csv
+```
+This automatically creates a random event using mobs from `Spawnable Mobs List.csv`, matching difficulty tiers appropriately!
+
+**Option B: Use the example**
 ```bash
 cp example_event_config.csv my_event.csv
 ```
 
-**Option B: Generate a blank template**
+**Option C: Generate a blank template**
 ```bash
 python create_csv_template.py my_event.csv
 ```
