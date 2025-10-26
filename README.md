@@ -9,7 +9,10 @@ This Python CLI tool generates all SQL files needed for Asheron's Call ACE serve
 - 10 Wave Generators (10 monsters each)
 - 1 Boss Wave Generator (10 monsters)
 
-Instead of manually creating and editing 33+ SQL files, you simply edit a CSV file in a spreadsheet and run the generator.
+Instead of manually creating and editing 33+ SQL files, you can:
+- 🎲 **Auto-generate random events** from your spawnable mobs list (NEW!)
+- ✏️ Edit a CSV file in a spreadsheet and run the generator
+- 📋 Use pre-made templates
 
 ## Quick Start
 
