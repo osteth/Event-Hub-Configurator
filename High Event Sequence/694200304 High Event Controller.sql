@@ -1,7 +1,7 @@
 DELETE FROM `weenie` WHERE `class_Id` = 694200304;
 
 INSERT INTO `weenie` (`class_Id`, `class_Name`, `type`, `last_Modified`)
-VALUES (694200304, 'High Event Controller', 10, '2025-10-10 02:04:14') /* Creature */;
+VALUES (694200304, 'High Event Controller', 10, '2026-01-12 15:21:57') /* Creature */;
 
 INSERT INTO `weenie_properties_int` (`object_Id`, `type`, `value`)
 VALUES (694200304,   1,         16) /* ItemType - Creature */
@@ -10,8 +10,8 @@ VALUES (694200304,   1,         16) /* ItemType - Creature */
      , (694200304,   7,         -1) /* ContainersCapacity */
      , (694200304,  16,          1) /* ItemUseable - No */
      , (694200304,  25,        275) /* Level */
-     , (694200304,  81,          1) /* MaxGeneratedObjects */
-     , (694200304,  82,          1) /* InitGeneratedObjects */
+     , (694200304,  81,         13) /* MaxGeneratedObjects - Event Bell + 11 Wave Controllers (10 regular + 1 boss) + Exit Controller */
+     , (694200304,  82,          1) /* InitGeneratedObjects - Only spawn Bell initially, wave controllers spawn sequentially on destruction */
      , (694200304,  93,       1040) /* PhysicsState - IgnoreCollisions, Gravity */
      , (694200304, 103,          2) /* GeneratorDestructionType - Destroy */
      , (694200304, 113,          1) /* Gender - Male */
@@ -25,7 +25,7 @@ VALUES (694200304,   1,         16) /* ItemType - Creature */
 INSERT INTO `weenie_properties_bool` (`object_Id`, `type`, `value`)
 VALUES (694200304,   1, True ) /* Stuck */
      , (694200304,  13, True ) /* Ethereal */
-     , (694200304,  18, True ) /* Visibility */
+     , (694200304,  18, False ) /* Visibility */
      , (694200304,  19, False) /* Attackable */
      , (694200304,  52, True ) /* AiImmobile */;
 
@@ -60,6 +60,7 @@ VALUES (694200304,   1,       5) /* HeartbeatInterval */
      , (694200304,  73,       1) /* ResistStaminaBoost */
      , (694200304,  74,       1) /* ResistManaDrain */
      , (694200304,  75,       1) /* ResistManaBoost */
+     , (694200304,  76,       1) /* Translucency - Fully transparent to make controller invisible */
      , (694200304, 104,      10) /* ObviousRadarRange */
      , (694200304, 117,     0.5) /* FocusedProbability */
      , (694200304, 121,       1) /* GeneratorInitialDelay */
@@ -106,24 +107,36 @@ VALUES (694200304,  0,  4,  0,    0,    0,    0,    0,    0,    0,    0,    0,  
      , (694200304,  8,  4,  2, 0.75,    0,    0,    0,    0,    0,    0,    0,    0,    0, 3,    0,    0, 0.22,    0,    0, 0.22,    0,    0, 0.22,    0,    0, 0.22) /* Foot */;
 
 INSERT INTO `weenie_properties_emote` (`object_Id`, `category`, `probability`, `weenie_Class_Id`, `style`, `substyle`, `quest`, `vendor_Type`, `min_Health`, `max_Health`)
-VALUES (694200304, 37 /* ReceiveLocalSignal */,      1, NULL, NULL, NULL, 'DeleteMe', NULL, NULL, NULL);
+VALUES (694200304, 37,      1, NULL, NULL, NULL, 'DeleteMe', NULL, NULL, NULL); /* ReceiveLocalSignal */
 
 SET @parent_id = LAST_INSERT_ID();
 
 INSERT INTO `weenie_properties_emote_action` (`emote_Id`, `order`, `type`, `delay`, `extent`, `motion`, `message`, `test_String`, `min`, `max`, `min_64`, `max_64`, `min_Dbl`, `max_Dbl`, `stat`, `display`, `amount`, `amount_64`, `hero_X_P_64`, `percent`, `spell_Id`, `wealth_Rating`, `treasure_Class`, `treasure_Type`, `p_Script`, `sound`, `destination_Type`, `weenie_Class_Id`, `stack_Size`, `palette`, `shade`, `try_To_Bond`, `obj_Cell_Id`, `origin_X`, `origin_Y`, `origin_Z`, `angles_W`, `angles_X`, `angles_Y`, `angles_Z`)
-VALUES (@parent_id,  0,  77 /* DeleteSelf */, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+VALUES (@parent_id,  0,  77, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); /* DeleteSelf */
+
+INSERT INTO `weenie_properties_emote` (`object_Id`, `category`, `probability`, `weenie_Class_Id`, `style`, `substyle`, `quest`, `vendor_Type`, `min_Health`, `max_Health`)
+VALUES (694200304, 37,      1, NULL, NULL, NULL, 'DeleteEventController', NULL, NULL, NULL); /* ReceiveLocalSignal - Exit Controller signals event is complete */
+
+SET @parent_id = LAST_INSERT_ID();
+
+INSERT INTO `weenie_properties_emote_action` (`emote_Id`, `order`, `type`, `delay`, `extent`, `motion`, `message`, `test_String`, `min`, `max`, `min_64`, `max_64`, `min_Dbl`, `max_Dbl`, `stat`, `display`, `amount`, `amount_64`, `hero_X_P_64`, `percent`, `spell_Id`, `wealth_Rating`, `treasure_Class`, `treasure_Type`, `p_Script`, `sound`, `destination_Type`, `weenie_Class_Id`, `stack_Size`, `palette`, `shade`, `try_To_Bond`, `obj_Cell_Id`, `origin_X`, `origin_Y`, `origin_Z`, `angles_W`, `angles_X`, `angles_Y`, `angles_Z`)
+VALUES (@parent_id,  0,  77, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL); /* DeleteSelf - Clean up Event Controller when event is complete */
+
+INSERT INTO `weenie_properties_emote` (`object_Id`, `category`, `probability`, `weenie_Class_Id`, `style`, `substyle`, `quest`, `vendor_Type`, `min_Health`, `max_Health`)
+VALUES (694200304, 37,      1, NULL, NULL, NULL, 'StartEvent', NULL, NULL, NULL); /* ReceiveLocalSignal - Bell sends this when rung, but Wave 1 spawns automatically when Bell is destroyed */
+
 
 INSERT INTO `weenie_properties_generator` (`object_Id`, `probability`, `weenie_Class_Id`, `delay`, `init_Create`, `max_Create`, `when_Create`, `where_Create`, `stack_Size`, `palette_Id`, `shade`, `obj_Cell_Id`, `origin_X`, `origin_Y`, `origin_Z`, `angles_W`, `angles_X`, `angles_Y`, `angles_Z`)
-VALUES (694200304, -1, 694200294, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Event Bell */
-         , (694200304, -1, 694200332, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200333, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200334, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200335, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200336, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200337, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200338, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200339, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200340, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200341, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-         , (694200304, -1, 694200342, 1600, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave Generator */
-     , (694200304, -1, 694200295, 1600, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Event Exit Controller */;
+VALUES (694200304, -1, 694200294, 0, 1, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Event Bell at Event Controller location (spawn on creation) */
+     , (694200304, -1, 694200332, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 1 Controller (spawn when Event Bell is destroyed) */
+     , (694200304, -1, 694200333, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 2 Controller (spawn when Wave 1 Controller is destroyed) */
+     , (694200304, -1, 694200334, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 3 Controller (spawn when Wave 2 Controller is destroyed) */
+     , (694200304, -1, 694200335, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 4 Controller (spawn when Wave 3 Controller is destroyed) */
+     , (694200304, -1, 694200336, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 5 Controller (spawn when Wave 4 Controller is destroyed) */
+     , (694200304, -1, 694200337, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 6 Controller (spawn when Wave 5 Controller is destroyed) */
+     , (694200304, -1, 694200338, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 7 Controller (spawn when Wave 6 Controller is destroyed) */
+     , (694200304, -1, 694200339, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 8 Controller (spawn when Wave 7 Controller is destroyed) */
+     , (694200304, -1, 694200340, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 9 Controller (spawn when Wave 8 Controller is destroyed) */
+     , (694200304, -1, 694200341, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 10 Controller (spawn when Wave 9 Controller is destroyed) */
+     , (694200304, -1, 694200342, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0) /* Generate Wave 11 Controller (spawn when Wave 10 Controller is destroyed) */
+     , (694200304, -1, 694200295, 0, 0, 1, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0); /* Generate Event Exit Controller (spawn when Wave 11 Controller is destroyed) */

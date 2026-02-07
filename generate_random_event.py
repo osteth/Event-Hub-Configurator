@@ -8,8 +8,35 @@ import csv
 import random
 import argparse
 import sys
+import os
 from collections import defaultdict
 from typing import Dict, List, Tuple
+
+
+def load_mob_spawn_data(csv_path: str = 'Spawnable Mobs List.csv') -> Dict[int, int]:
+    """Load mob spawn data from CSV file. Returns dict mapping WCID to max spawns per location."""
+    spawn_map = {}
+    mapping_file = os.path.join(os.path.dirname(__file__), csv_path)
+    
+    if os.path.exists(mapping_file):
+        with open(mapping_file, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                wcid_str = row.get('ID', '').strip()
+                if wcid_str and wcid_str.isdigit():
+                    wcid = int(wcid_str)
+                    spawns_per_location_str = row.get('Spawns Per Location', '') or ''
+                    spawns_per_location_str = spawns_per_location_str.strip() if spawns_per_location_str else ''
+                    if spawns_per_location_str and spawns_per_location_str.isdigit():
+                        spawn_map[wcid] = int(spawns_per_location_str)
+                    else:
+                        # Default to 1 if not specified
+                        spawn_map[wcid] = 1
+    else:
+        print(f"Warning: Spawnable Mobs List file not found: {mapping_file}")
+        print("  Using default: all mobs can spawn 1 per location")
+    
+    return spawn_map
 
 
 def load_spawnable_mobs(csv_file: str = 'Spawnable Mobs List.csv') -> Dict[str, Dict[str, List[Tuple[int, str]]]]:
@@ -127,22 +154,25 @@ def generate_boss_wave(boss_mobs: List[Tuple[int, str]],
 
 
 def generate_event_config(mobs: Dict[str, Dict[str, List[Tuple[int, str]]]], 
+                         spawn_data: Dict[int, int],
                          tiers: List[str],
                          mixed_waves: bool = False,
                          boss_count: int = 1) -> List[Dict[str, any]]:
     """
-    Generate complete event configuration.
+    Generate complete event configuration with position assignments and spawn counts.
     
     Args:
         mobs: Categorized mobs dictionary
+        spawn_data: Dict mapping WCID to max spawns per location
         tiers: List of tiers to generate ('low', 'mid', 'high')
         mixed_waves: Whether to mix different mobs in each wave
         boss_count: Number of bosses in boss wave
     
     Returns:
-        List of configuration rows
+        List of configuration rows with position_index and spawn_count
     """
     config = []
+    NUM_PRIMARY_POSITIONS = 4
     
     for tier in tiers:
         tier_cap = tier.capitalize()
@@ -161,54 +191,95 @@ def generate_event_config(mobs: Dict[str, Dict[str, List[Tuple[int, str]]]],
         
         # Generate 10 regular waves
         for wave_num in range(1, 11):
-            wave_mobs = generate_wave(mobs[tier_cap]['regular'], mixed=mixed_waves)
+            # Get unique mob types for this wave
+            if mixed_waves:
+                # For mixed waves, get 4 different mobs (one per position)
+                unique_mobs = [random.choice(mobs[tier_cap]['regular'])[0] for _ in range(NUM_PRIMARY_POSITIONS)]
+            else:
+                # For same-mob waves, pick 4 different mobs (one per position)
+                # The "same mob per wave" mode means the same set of mobs across waves, not same mob in all positions
+                unique_mobs = [random.choice(mobs[tier_cap]['regular'])[0] for _ in range(NUM_PRIMARY_POSITIONS)]
             
-            for slot, mob_id in enumerate(wave_mobs, start=1):
+            # Assign one mob type to each of the 4 primary positions
+            for position_index in range(NUM_PRIMARY_POSITIONS):
+                # Each position gets a different mob type
+                mob_type = unique_mobs[position_index]
+                
+                # Get max spawns per location for this mob type
+                max_spawns_for_mob = spawn_data.get(mob_type, 1)
+                if max_spawns_for_mob <= 0:
+                    max_spawns_for_mob = 1
+                
+                # Random spawn count for this position (1 to max_spawns_for_mob)
+                spawn_count = random.randint(1, max_spawns_for_mob)
+                
                 config.append({
                     'tier': tier,
                     'wave_number': wave_num,
-                    'slot': slot,
-                    'wcid': mob_id
+                    'position_index': position_index,
+                    'wcid': mob_type,
+                    'spawn_count': spawn_count
                 })
             
-            print(f"  ✓ Wave {wave_num} generated")
+            print(f"  [OK] Wave {wave_num} generated")
         
         # Generate boss wave
-        boss_wave_mobs = generate_boss_wave(
-            mobs[tier_cap]['boss'], 
-            mobs[tier_cap]['regular'],
-            boss_count=boss_count,
-            mixed=mixed_waves
-        )
+        # Assign bosses and regular mobs to positions
+        boss_mobs = [m[0] for m in mobs[tier_cap]['boss']]
+        regular_mobs = [m[0] for m in mobs[tier_cap]['regular']]
         
-        for slot, mob_id in enumerate(boss_wave_mobs, start=1):
+        # Assign bosses to first N positions
+        for position_index in range(min(boss_count, NUM_PRIMARY_POSITIONS)):
+            boss_type = random.choice(boss_mobs)
+            max_spawns_for_boss = spawn_data.get(boss_type, 1)
+            if max_spawns_for_boss <= 0:
+                max_spawns_for_boss = 1
+            spawn_count = random.randint(1, max_spawns_for_boss)
+            
             config.append({
                 'tier': tier,
                 'wave_number': 'boss',
-                'slot': slot,
-                'wcid': mob_id
+                'position_index': position_index,
+                'wcid': boss_type,
+                'spawn_count': spawn_count
             })
         
-        print(f"  ✓ Boss wave generated ({boss_count} boss(es) + {10-boss_count} regular)")
+        # Fill remaining positions with regular mobs
+        for position_index in range(boss_count, NUM_PRIMARY_POSITIONS):
+            regular_type = random.choice(regular_mobs)
+            max_spawns_for_regular = spawn_data.get(regular_type, 1)
+            if max_spawns_for_regular <= 0:
+                max_spawns_for_regular = 1
+            spawn_count = random.randint(1, max_spawns_for_regular)
+            
+            config.append({
+                'tier': tier,
+                'wave_number': 'boss',
+                'position_index': position_index,
+                'wcid': regular_type,
+                'spawn_count': spawn_count
+            })
+        
+        print(f"  [OK] Boss wave generated ({boss_count} boss(es) + {NUM_PRIMARY_POSITIONS-boss_count} regular)")
     
     return config
 
 
 def write_config_csv(config: List[Dict[str, any]], output_file: str):
-    """Write configuration to CSV file."""
+    """Write configuration to CSV file with position assignments."""
     with open(output_file, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=['tier', 'wave_number', 'slot', 'wcid'])
+        writer = csv.DictWriter(f, fieldnames=['tier', 'wave_number', 'position_index', 'wcid', 'spawn_count'])
         writer.writeheader()
         writer.writerows(config)
     
-    print(f"\n✅ Configuration written to: {output_file}")
+    print(f"\n[SUCCESS] Configuration written to: {output_file}")
     print(f"   Total rows: {len(config)}")
 
 
 def print_summary(config: List[Dict[str, any]]):
     """Print summary of generated configuration."""
     tiers = set(row['tier'] for row in config)
-    print(f"\n📊 Summary:")
+    print(f"\n[SUMMARY] Summary:")
     print(f"   Tiers generated: {', '.join(sorted(tiers))}")
     print(f"   Total waves per tier: 11 (10 regular + 1 boss)")
     print(f"   Total monsters per wave: 10")
@@ -298,21 +369,24 @@ Examples:
     print("=" * 60)
     print("Random Event Configuration Generator")
     print("=" * 60)
-    print(f"\n⚙️  Configuration:")
+    print(f"\n[CONFIG] Configuration:")
     print(f"   Tiers: {', '.join(tiers)}")
     print(f"   Wave mode: {'Mixed mobs' if args.mixed_waves else 'Same mob per wave'}")
     print(f"   Boss wave: {args.boss_count} boss(es) + {10-args.boss_count} regular mob(s)")
     print(f"   Output file: {args.output}")
     
     # Load spawnable mobs
-    print(f"\n📖 Loading mobs from: {args.mobs_file}")
+    print(f"\n[LOAD] Loading mobs from: {args.mobs_file}")
     mobs = load_spawnable_mobs(args.mobs_file)
     
+    # Load spawn data for position assignments
+    spawn_data = load_mob_spawn_data(args.mobs_file)
+    
     # Generate configuration
-    config = generate_event_config(mobs, tiers, args.mixed_waves, args.boss_count)
+    config = generate_event_config(mobs, spawn_data, tiers, args.mixed_waves, args.boss_count)
     
     if not config:
-        print("\n❌ Error: No configuration generated. Check your spawnable mobs file.")
+        print("\n[ERROR] No configuration generated. Check your spawnable mobs file.")
         sys.exit(1)
     
     # Write to CSV
@@ -321,7 +395,7 @@ Examples:
     # Print summary
     print_summary(config)
     
-    print(f"\n✨ Next step: Run 'python generate_event_files.py {args.output}' to create SQL files")
+    print(f"\n[NEXT] Next step: Run 'python generate_event_files.py {args.output}' to create SQL files")
     print("=" * 60)
 
 

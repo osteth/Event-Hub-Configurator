@@ -9,7 +9,8 @@ VALUES (694200296,   1,      65536) /* ItemType - Portal */
      , (694200296,  86,        100) /* MinLevel */
      , (694200296,  93,       3084) /* PhysicsState - Ethereal, ReportCollisions, Gravity, LightingOn */
      , (694200296, 111,         49) /* PortalBitmask - Unrestricted, NoSummon, NoRecall */
-     , (694200296, 133,          4) /* ShowableOnRadar - ShowAlways */;
+     , (694200296, 133,          4) /* ShowableOnRadar - ShowAlways */
+	 , (694200296, 267,        180) /* Lifespan */;
 
 INSERT INTO `weenie_properties_bool` (`object_Id`, `type`, `value`)
 VALUES (694200296,   1, True ) /* Stuck */
@@ -32,4 +33,3 @@ VALUES (694200296,   1, 0x020005D5) /* Setup */
 INSERT INTO `weenie_properties_position` (`object_Id`, `position_Type`, `obj_Cell_Id`, `origin_X`, `origin_Y`, `origin_Z`, `angles_W`, `angles_X`, `angles_Y`, `angles_Z`, `variation_Id`)
 VALUES (694200296, 2, 0x654C0696, 126.225311, -161.925812, 0.005000, 0.093837, 0, 0, 0.995588, 2) /* Destination */
 /* @teleloc     0x654C0696 [126.225311 -161.925812 0.005000] 0.093837 0.000000 0.000000 0.995588  */;
-
